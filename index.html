@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaflet</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+    <style>
+        #map {
+            height: 100%;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="map" style="height: 500px; width: auto;">
+    </div>
+</body>
+
+<script>
+    // initialize the map
+    var ucsd_coor = [32.88044, -117.23758];
+
+    var map = L.map('map',{
+        center: ucsd_coor,     // at UCSD
+        zoom: 20
+    });
+
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    let marker = L.marker(ucsd_coor).addTo(map);
+    var polygon = L.polygon([
+        [32.882, -0.08],
+        [32.822, -0.06],
+        [32.892, -0.047]
+    ]).addTo(map);
+
+    var polygon = L.polygon([
+        [32.88038,-117.23632],
+        [32.88070, -117.23685],
+        [32.88092, -117.23626]
+    ]).addTo(map);
+
+    var circle = L.circle(ucsd_coor, {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.5,
+        radius: 70
+    }).addTo(map);
+
+    marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+    circle.bindPopup("I am a circle.");
+    polygon.bindPopup("I am a polygon.");
+
+    var popup = L.popup()
+        .setLatLng([32.88070, -117.23685])
+        .setContent("I am a standalone popup.")
+        .openOn(map);
+
+    var popup = L.popup();
+
+    function onMapClick(e) {
+        popup
+            .setLatLng(e.latlng)
+            .setContent("You clicked the map at " + e.latlng.toString())
+            .openOn(map);
+    }
+
+    map.on('click', onMapClick);
+
+</script>
+</html>
